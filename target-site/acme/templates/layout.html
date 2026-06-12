@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{title} | ACME</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <script defer src="/static/js/site.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/">ACME</a>
+    <nav aria-label="Primary navigation">
+      <a href="/about">About</a>
+      <a href="/products">Products</a>
+      <a href="/careers">Careers</a>
+      <a href="/support">Support</a>
+      <a href="/vendor">Vendors</a>
+      <a href="/portal">Portal</a>
+    </nav>
+    <span class="user-badge">{user_badge}</span>
+  </header>
+  <main>
+    {body}
+  </main>
+  <footer>
+    <p>Fictional ACME local training target. Authorized lab use only.</p>
+    <p><a href="/lab-notes">Lab notes</a> · <a href="/health">Health</a> · <a href="/robots.txt">robots.txt</a></p>
+  </footer>
+</body>
+</html>
