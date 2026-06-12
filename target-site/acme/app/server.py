@@ -8,6 +8,7 @@ import json
 import mimetypes
 import os
 import secrets
+import sqlite3
 import time
 from http import cookies
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
@@ -21,6 +22,7 @@ STATIC_DIR = BASE_DIR / "static"
 DATA_DIR = BASE_DIR / "data"
 LOG_FILE = DATA_DIR / "access.log"
 TICKETS_FILE = DATA_DIR / "support_tickets.jsonl"
+DB_FILE = DATA_DIR / "acme.sqlite"
 HOST = os.environ.get("ACME_HOST", "127.0.0.1")
 PORT = int(os.environ.get("ACME_PORT", "8000"))
 
@@ -30,11 +32,72 @@ USERS = {
     "vendor.acme": {"password": "VendorPortal2026", "role": "Vendor", "team": "Logistics Partner"},
 }
 
-VENDORS = {
-    "northwind": "Northwind Freight — contract renewal pending",
-    "contoso": "Contoso Sensors — active supplier for smart crates",
-    "globex": "Globex Analytics — pilot data-sharing agreement",
-}
+VENDOR_SEED = [
+    (
+        "northwind",
+        "Northwind Freight",
+        "Freight brokerage",
+        "Northwest",
+        "Renewal pending",
+        "Regional LTL coverage for warehouse overflow routes.",
+    ),
+    (
+        "contoso",
+        "Contoso Sensors",
+        "Telemetry hardware",
+        "Midwest",
+        "Active",
+        "Approved supplier for smart crate sensor modules.",
+    ),
+    (
+        "globex",
+        "Globex Analytics",
+        "Route intelligence",
+        "West",
+        "Pilot",
+        "Data-sharing pilot for route delay forecasting.",
+    ),
+    (
+        "initech",
+        "Initech Mobile",
+        "Field devices",
+        "South",
+        "Active",
+        "Warehouse tablet refresh and scanner support partner.",
+    ),
+    (
+        "umbrella",
+        "Umbrella Cold Chain",
+        "Temperature logistics",
+        "Northeast",
+        "Watchlist",
+        "Cold-chain carrier under quarterly performance review.",
+    ),
+    (
+        "stark",
+        "Stark Packaging",
+        "Rugged containers",
+        "Central",
+        "Active",
+        "Backup supplier for impact-resistant crate shells.",
+    ),
+    (
+        "wayne",
+        "Wayne Yard Services",
+        "Facility maintenance",
+        "East",
+        "Active",
+        "Dock equipment and yard-light maintenance provider.",
+    ),
+    (
+        "hooli",
+        "Hooli Transit Labs",
+        "Optimization research",
+        "West",
+        "Review required",
+        "Experimental dispatch optimization proof of concept.",
+    ),
+]
 
 SESSIONS: dict[str, str] = {}
 
@@ -43,6 +106,34 @@ def ensure_data_dir() -> None:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     LOG_FILE.touch(exist_ok=True)
     TICKETS_FILE.touch(exist_ok=True)
+
+
+def init_database() -> None:
+    ensure_data_dir()
+    with sqlite3.connect(DB_FILE) as conn:
+        conn.execute(
+            """
+            CREATE TABLE IF NOT EXISTS vendors (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                code TEXT NOT NULL UNIQUE,
+                name TEXT NOT NULL,
+                service TEXT NOT NULL,
+                region TEXT NOT NULL,
+                status TEXT NOT NULL,
+                notes TEXT NOT NULL
+            )
+            """
+        )
+        count = conn.execute("SELECT COUNT(*) FROM vendors").fetchone()[0]
+        if count == 0:
+            conn.executemany(
+                """
+                INSERT INTO vendors (code, name, service, region, status, notes)
+                VALUES (?, ?, ?, ?, ?, ?)
+                """,
+                VENDOR_SEED,
+            )
+        conn.commit()
 
 
 def render_template(name: str, **context: Any) -> bytes:
@@ -58,6 +149,117 @@ def page_shell(title: str, body: str, username: str | None = None) -> bytes:
 
 def form_value(params: dict[str, list[str]], key: str) -> str:
     return params.get(key, [""])[0].strip()
+
+
+def db_rows(sql: str, params: tuple[str, ...] = ()) -> list[sqlite3.Row]:
+    init_database()
+    with sqlite3.connect(DB_FILE) as conn:
+        conn.row_factory = sqlite3.Row
+        return list(conn.execute(sql, params))
+
+
+def search_vendors(query: str) -> list[sqlite3.Row]:
+    cleaned = query.strip().lower()
+    if not cleaned:
+        return db_rows(
+            """
+            SELECT code, name, service, region, status, notes
+            FROM vendors
+            ORDER BY name
+            """
+        )
+    pattern = f"%{cleaned}%"
+    return db_rows(
+        """
+        SELECT code, name, service, region, status, notes
+        FROM vendors
+        WHERE lower(code) LIKE ?
+           OR lower(name) LIKE ?
+           OR lower(service) LIKE ?
+           OR lower(region) LIKE ?
+           OR lower(status) LIKE ?
+           OR lower(notes) LIKE ?
+        ORDER BY name
+        """,
+        (pattern, pattern, pattern, pattern, pattern, pattern),
+    )
+
+
+def search_vendors_sql_lab(query: str) -> tuple[list[sqlite3.Row], str, str]:
+    cleaned = query.strip().lower()
+    if cleaned:
+        sql = f"""
+        SELECT code, name, service, region, status, notes
+        FROM vendors
+        WHERE lower(code) LIKE '%{cleaned}%'
+           OR lower(name) LIKE '%{cleaned}%'
+           OR lower(service) LIKE '%{cleaned}%'
+           OR lower(region) LIKE '%{cleaned}%'
+           OR lower(status) LIKE '%{cleaned}%'
+           OR lower(notes) LIKE '%{cleaned}%'
+        ORDER BY name
+        """
+    else:
+        sql = """
+        SELECT code, name, service, region, status, notes
+        FROM vendors
+        ORDER BY name
+        """
+    try:
+        return db_rows(sql), sql.strip(), ""
+    except sqlite3.Error as error:
+        return [], sql.strip(), str(error)
+
+
+def render_vendor_table(rows: list[sqlite3.Row]) -> str:
+    if not rows:
+        return '<p class="empty-state">No matching vendors found.</p>'
+    table_rows = []
+    for row in rows:
+        table_rows.append(
+            """
+            <tr>
+              <td><code>{code}</code></td>
+              <td>{name}</td>
+              <td>{service}</td>
+              <td>{region}</td>
+              <td><span class="status-pill">{status}</span></td>
+              <td>{notes}</td>
+            </tr>
+            """.format(
+                code=html.escape(row["code"]),
+                name=html.escape(row["name"]),
+                service=html.escape(row["service"]),
+                region=html.escape(row["region"]),
+                status=html.escape(row["status"]),
+                notes=html.escape(row["notes"]),
+            )
+        )
+    return """
+    <div class="table-wrap">
+      <table class="vendor-table">
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Vendor</th>
+            <th>Service</th>
+            <th>Region</th>
+            <th>Status</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows}
+        </tbody>
+      </table>
+    </div>
+    """.format(rows="\n".join(table_rows))
+
+
+def result_count_text(count: int) -> str:
+    if count == 1:
+        return "1 vendor found"
+    return f"{count} vendors found"
 
 
 class AcmeHandler(BaseHTTPRequestHandler):
@@ -128,8 +330,10 @@ class AcmeHandler(BaseHTTPRequestHandler):
         if path == "/portal":
             return self.page_portal(user)
         if path == "/vendor":
-            query = form_value(parse_qs(parsed.query), "q")
-            return self.page_vendor(user, query)
+            params = parse_qs(parsed.query)
+            query = form_value(params, "q")
+            mode = form_value(params, "mode")
+            return self.page_vendor(user, query, mode)
         if path == "/lab-notes":
             return self.simple_page("Lab Notes", "lab-notes.html", user)
         if path == "/robots.txt":
@@ -205,14 +409,32 @@ class AcmeHandler(BaseHTTPRequestHandler):
         ).decode("utf-8")
         self.send_html(page_shell("Portal", body, user))
 
-    def page_vendor(self, user: str | None, query: str) -> None:
-        result = "Search for a vendor code such as northwind, contoso, or globex."
-        if query:
-            result = VENDORS.get(query.lower(), "No matching vendor record found.")
+    def page_vendor(self, user: str | None, query: str, mode: str = "") -> None:
+        is_lab = mode == "lab"
+        safe_query = "" if is_lab else query
+        lab_query = query if is_lab else ""
+
+        safe_results = search_vendors(safe_query)
+        lab_results: list[sqlite3.Row] = []
+        lab_sql = "Submit a lab search to see the intentionally vulnerable SQL statement."
+        lab_error = ""
+        if is_lab:
+            lab_results, lab_sql, lab_error = search_vendors_sql_lab(lab_query)
+
+        lab_error_html = ""
+        if lab_error:
+            lab_error_html = f'<p class="error">SQLite error: {html.escape(lab_error)}</p>'
+
         body = render_template(
             "vendor.html",
-            query=html.escape(query),
-            result=html.escape(result),
+            safe_query=html.escape(safe_query),
+            safe_result_count=html.escape(result_count_text(len(safe_results))),
+            safe_results=render_vendor_table(safe_results),
+            lab_query=html.escape(lab_query),
+            lab_result_count=html.escape(result_count_text(len(lab_results))) if is_lab else "No lab query run",
+            lab_results=render_vendor_table(lab_results) if is_lab else '<p class="empty-state">Run a lab search to populate this table.</p>',
+            lab_sql=html.escape(lab_sql),
+            lab_error=lab_error_html,
         ).decode("utf-8")
         self.send_html(page_shell("Vendor Lookup", body, user))
 
@@ -260,6 +482,7 @@ class AcmeHandler(BaseHTTPRequestHandler):
 
 def main() -> None:
     ensure_data_dir()
+    init_database()
     server = ThreadingHTTPServer((HOST, PORT), AcmeHandler)
     print(f"ACME training target running at http://{HOST}:{PORT}")
     print("Press Ctrl+C to stop.")

@@ -219,7 +219,8 @@ h3 {
 .auth-layout,
 .portal-header,
 .portal-grid,
-.vendor-layout,
+.vendor-search-section,
+.sql-lab-section,
 .support-layout,
 .footer-inner {
   width: min(1180px, calc(100% - 2rem));
@@ -284,7 +285,8 @@ button:hover {
 .split-section,
 .auth-layout,
 .support-layout,
-.vendor-layout,
+.vendor-search-section,
+.sql-lab-section,
 .portal-header {
   padding-block: 4.5rem;
 }
@@ -538,16 +540,24 @@ select:focus {
 }
 
 .support-layout,
-.vendor-layout {
+.sql-lab-grid {
   display: grid;
   grid-template-columns: minmax(16rem, .8fr) minmax(0, 1.2fr);
   gap: 1rem;
   align-items: start;
 }
 
-.vendor-layout {
-  grid-template-columns: minmax(0, 1fr);
+.vendor-search-section {
+  padding-bottom: 2rem;
+}
+
+.sql-lab-section {
   padding-top: 2rem;
+}
+
+.vendor-search-section .lookup-card,
+.sql-lab-grid {
+  margin-bottom: 1rem;
 }
 
 .lookup-card {
@@ -556,6 +566,68 @@ select:focus {
 
 .result-panel {
   min-height: 11rem;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.vendor-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  font-size: .92rem;
+}
+
+.vendor-table th,
+.vendor-table td {
+  border-bottom: 1px solid var(--line);
+  padding: .75rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.vendor-table th {
+  background: var(--surface-2);
+  color: #33424b;
+  font-size: .78rem;
+  text-transform: uppercase;
+}
+
+.vendor-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: #e6f3f1;
+  color: var(--teal-dark);
+  font-size: .8rem;
+  font-weight: 800;
+  padding: .18rem .5rem;
+  white-space: nowrap;
+}
+
+.empty-state {
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
+.sql-preview {
+  max-height: 18rem;
+  overflow: auto;
+  border-radius: 8px;
+  background: #071a25;
+  color: #dff4f0;
+  font-size: .86rem;
+  line-height: 1.5;
+  margin: 0;
+  padding: 1rem;
+  white-space: pre-wrap;
 }
 
 .portal-header {
@@ -645,12 +717,14 @@ footer {
   .split-section,
   .split-section.reverse,
   .auth-layout,
-  .support-layout {
+  .support-layout,
+  .sql-lab-grid {
     grid-template-columns: 1fr 1fr;
   }
 
   .auth-layout,
   .support-layout,
+  .sql-lab-grid,
   .split-section,
   .split-section.reverse {
     grid-template-columns: 1fr;
@@ -706,7 +780,8 @@ footer {
   .split-section,
   .auth-layout,
   .support-layout,
-  .vendor-layout,
+  .vendor-search-section,
+  .sql-lab-section,
   .portal-header {
     padding-block: 3rem;
   }
