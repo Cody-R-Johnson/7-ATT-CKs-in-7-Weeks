@@ -1,17 +1,36 @@
-<h1>Support</h1>
-<p>Submit a fictional support request. Tickets are written to a local JSONL file for lab evidence.</p>
-<p class="success">{message}</p>
-<form method="post" action="/support" class="form-card">
-  <label>Name <input name="name" required></label>
-  <label>Email <input name="email" type="email" required></label>
-  <label>Category
-    <select name="category">
-      <option>Login issue</option>
-      <option>Vendor question</option>
-      <option>Shipment exception</option>
-      <option>Security concern</option>
-    </select>
-  </label>
-  <label>Message <textarea name="message" rows="5" required></textarea></label>
-  <button type="submit">Create ticket</button>
-</form>
+<section class="page-hero support-hero">
+  <div>
+    <p class="eyebrow">Support</p>
+    <h1>Get help from ACME operations support.</h1>
+    <p>Report access issues, vendor questions, shipment exceptions, or security concerns for local review.</p>
+  </div>
+</section>
+
+<section class="support-layout">
+  <div class="support-sidebar">
+    <h2>Support channels</h2>
+    <p>Priority incidents are routed to regional operations. Standard requests are reviewed during business hours.</p>
+    <ul>
+      <li>Login and access issues</li>
+      <li>Vendor onboarding questions</li>
+      <li>Shipment exception reports</li>
+      <li>Security observations</li>
+    </ul>
+  </div>
+  <form method="post" action="/support" class="form-card">
+    <h2>Create a request</h2>
+    <p class="success">{message}</p>
+    <label>Name <input name="name" required></label>
+    <label>Email <input name="email" type="email" required></label>
+    <label>Category
+      <select name="category">
+        <option>Login issue</option>
+        <option>Vendor question</option>
+        <option>Shipment exception</option>
+        <option>Security concern</option>
+      </select>
+    </label>
+    <label>Message <textarea name="message" rows="5" required></textarea></label>
+    <button type="submit">Create ticket</button>
+  </form>
+</section>

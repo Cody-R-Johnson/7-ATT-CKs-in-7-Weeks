@@ -1,10 +1,19 @@
-<h1>Vendor Lookup</h1>
-<p>Search fictional vendor codes used by ACME logistics teams.</p>
-<form method="get" action="/vendor" class="form-card inline">
-  <label>Vendor code <input name="q" value="{query}"></label>
-  <button type="submit">Search</button>
-</form>
-<section class="panel">
-  <h2>Result</h2>
-  <p>{result}</p>
+<section class="page-hero vendor-hero">
+  <div>
+    <p class="eyebrow">Partner Tools</p>
+    <h1>Vendor status lookup</h1>
+    <p>Review approved supplier records and operational notes for active logistics partners.</p>
+  </div>
+</section>
+
+<section class="vendor-layout">
+  <form method="get" action="/vendor" class="form-card inline lookup-card">
+    <label>Vendor code <input name="q" value="{query}" placeholder="northwind, contoso, globex"></label>
+    <button type="submit">Search</button>
+  </form>
+  <section class="panel result-panel">
+    <p class="tag">Lookup result</p>
+    <h2>Vendor record</h2>
+    <p>{result}</p>
+  </section>
 </section>

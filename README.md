@@ -51,6 +51,10 @@ The fictional ACME site resembles a small business portal with public pages, emp
 
 The target site is **not** intended to be internet-facing. Keep it bound to localhost unless you are deliberately running it in an isolated lab network.
 
+## Generated Content Note
+
+The fictional ACME website content and local image assets in this repository were generated with GPT-codex for authorized training and lab use.
+
 ## 7-Week Learning Course
 
 | Week | Focus Area | Core Skills | Primary Tools | Outcome |
