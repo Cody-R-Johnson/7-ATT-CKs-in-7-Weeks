@@ -1,8 +1,18 @@
-<h1>Employee and Vendor Login</h1>
-<p>Use documented lab accounts from the program plan.</p>
-<p class="error">{error}</p>
-<form method="post" action="/login" class="form-card">
-  <label>Username <input name="username" autocomplete="username" required></label>
-  <label>Password <input name="password" type="password" autocomplete="current-password" required></label>
-  <button type="submit">Sign in</button>
-</form>
+<section class="auth-layout">
+  <div class="auth-copy">
+    <p class="eyebrow">Secure Access</p>
+    <h1>ACME employee and vendor portal</h1>
+    <p>Sign in to review operations bulletins, vendor workflows, and regional support notices.</p>
+    <div class="security-note">
+      <strong>Access notice</strong>
+      <span>Authorized ACME personnel and approved logistics partners only.</span>
+    </div>
+  </div>
+  <form method="post" action="/login" class="form-card auth-card">
+    <h2>Sign in</h2>
+    <p class="error">{error}</p>
+    <label>Username <input name="username" autocomplete="username" required></label>
+    <label>Password <input name="password" type="password" autocomplete="current-password" required></label>
+    <button type="submit">Sign in</button>
+  </form>
+</section>

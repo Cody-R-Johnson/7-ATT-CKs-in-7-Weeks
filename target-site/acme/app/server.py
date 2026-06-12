@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import html
 import json
+import mimetypes
 import os
 import secrets
 import time
@@ -159,11 +160,7 @@ class AcmeHandler(BaseHTTPRequestHandler):
         target = (STATIC_DIR / relative).resolve()
         if not str(target).startswith(str(STATIC_DIR.resolve())) or not target.is_file():
             return self.not_found(self.current_user())
-        content_type = "text/plain"
-        if target.suffix == ".css":
-            content_type = "text/css"
-        elif target.suffix == ".js":
-            content_type = "application/javascript"
+        content_type = mimetypes.guess_type(target.name)[0] or "application/octet-stream"
         self.send_response(200)
         self.send_header("Content-Type", content_type)
         self.end_headers()

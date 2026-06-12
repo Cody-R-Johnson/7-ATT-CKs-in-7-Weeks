@@ -1,15 +1,30 @@
-<h1>ACME Portal</h1>
-<section class="panel">
-  <h2>User Profile</h2>
-  <dl>
-    <dt>Username</dt><dd>{username}</dd>
-    <dt>Role</dt><dd>{role}</dd>
-    <dt>Team</dt><dd>{team}</dd>
-  </dl>
-  <p><a href="/logout">Log out</a></p>
+<section class="portal-header">
+  <div>
+    <p class="eyebrow">Internal Portal</p>
+    <h1>Operations dashboard</h1>
+    <p>Regional notices, access context, and operational updates for authenticated ACME users.</p>
+  </div>
+  <a class="button secondary quiet" href="/logout">Log out</a>
 </section>
-<section class="panel">
-  <h2>Operations Bulletin</h2>
-  <p>Warehouse tablets move to the new MDM profile next quarter. Vendor SSO testing continues in the west region.</p>
+
+<section class="portal-grid">
+  <article class="panel profile-panel">
+    <h2>User Profile</h2>
+    <dl>
+      <dt>Username</dt><dd>{username}</dd>
+      <dt>Role</dt><dd>{role}</dd>
+      <dt>Team</dt><dd>{team}</dd>
+    </dl>
+  </article>
+  <article class="panel">
+    <p class="tag">Bulletin</p>
+    <h2>Operations Bulletin</h2>
+    <p>Warehouse tablets move to the new MDM profile next quarter. Vendor SSO testing continues in the west region.</p>
+  </article>
+  <article class="panel">
+    <p class="tag">Facilities</p>
+    <h2>Regional readiness</h2>
+    <p>North dock telemetry is normal. West region scanner replacement is scheduled for the next maintenance window.</p>
+  </article>
 </section>
 {admin_panel}
