@@ -51,6 +51,10 @@ ACME is a fictional technology and logistics company. The local site includes:
 - A login page for staff.
 - A support request form.
 - A vendor lookup portal.
+- A shipment tracking table and shipment detail workflow.
+- Admin ticket and audit-log views.
+- Local-only SQL injection, IDOR, and stored XSS comparison labs.
+- Fake configuration breadcrumbs for recon practice.
 - A deliberately exposed lab notes page.
 - Application logs that can be inspected locally.
 
