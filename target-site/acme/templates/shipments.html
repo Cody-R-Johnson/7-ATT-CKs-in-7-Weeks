@@ -1,0 +1,49 @@
+<section class="page-hero shipment-hero">
+  <div>
+    <p class="eyebrow">Operations Tracking</p>
+    <h1>Shipment lookup</h1>
+    <p>Search fictional ACME freight records by tracking ID, vendor code, region, status, origin, or destination.</p>
+  </div>
+</section>
+
+<section class="vendor-search-section">
+  <div class="section-header">
+    <p class="eyebrow">Shipment Table</p>
+    <h2>Search the local shipment database</h2>
+    <p>These records are backed by SQLite and are useful for practicing reconnaissance, access control checks, and evidence collection.</p>
+  </div>
+  <form method="get" action="/shipments" class="form-card inline lookup-card">
+    <label>Shipment search <input name="q" value="{query}" placeholder="tracking ID, vendor, region, status, or location"></label>
+    <button type="submit">Search</button>
+  </form>
+  <section class="panel result-panel">
+    <div class="result-heading">
+      <div>
+        <p class="tag">{result_count}</p>
+        <h2>Shipment records</h2>
+      </div>
+      <a class="button secondary quiet" href="/portal/shipment?id=4">Restricted sample</a>
+    </div>
+    {shipment_results}
+  </section>
+</section>
+
+<section class="section">
+  <div class="info-grid lab-card-grid">
+    <article class="info-card">
+      <p class="tag">Normal Check</p>
+      <h3>Open your assigned shipment</h3>
+      <p>Sign in as a documented account and open a shipment assigned to that user to observe the allowed path.</p>
+    </article>
+    <article class="info-card">
+      <p class="tag">Denied Path</p>
+      <h3>Change the ID</h3>
+      <p>Try a shipment owned by another user and inspect the audit log as an administrator.</p>
+    </article>
+    <article class="info-card">
+      <p class="tag">IDOR Lab</p>
+      <h3>Compare lab mode</h3>
+      <p>Add mode=lab to the detail URL to trigger the intentionally vulnerable training behavior.</p>
+    </article>
+  </div>
+</section>

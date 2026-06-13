@@ -202,9 +202,14 @@ h3 {
 .careers-hero,
 .support-hero,
 .vendor-hero,
+.shipment-hero,
 .compact-hero {
   min-height: 24rem;
   background-image: url("/static/img/warehouse-automation.png");
+}
+
+.shipment-hero {
+  background-image: url("/static/img/smart-crate-kit.png");
 }
 
 .compact-hero {
@@ -220,9 +225,11 @@ h3 {
 .portal-header,
 .portal-grid,
 .vendor-search-section,
-.sql-lab-section,
-.support-layout,
-.footer-inner {
+  .sql-lab-section,
+  .support-layout,
+  .admin-section,
+  .detail-section,
+  .footer-inner {
   width: min(1180px, calc(100% - 2rem));
   margin-inline: auto;
 }
@@ -244,6 +251,10 @@ h3 {
   flex-wrap: wrap;
   gap: .8rem;
   margin-top: 1.5rem;
+}
+
+.compact-actions {
+  margin-top: 1rem;
 }
 
 .button,
@@ -568,6 +579,14 @@ select:focus {
   min-height: 11rem;
 }
 
+.result-heading {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
 .table-wrap {
   overflow-x: auto;
   border: 1px solid var(--line);
@@ -671,6 +690,75 @@ dt {
   font-style: italic;
 }
 
+.admin-link-grid,
+.shipment-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  margin-top: 1rem;
+}
+
+.detail-section {
+  padding-top: 0;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, .8fr);
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.detail-card {
+  min-height: 18rem;
+}
+
+.lab-warning {
+  border-color: #edc36c;
+  background: var(--warning);
+}
+
+.ticket-lab-grid,
+.config-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.ticket-lab-card,
+.config-card {
+  overflow-wrap: anywhere;
+}
+
+.ticket-lab-card {
+  border: 1px solid #edc36c;
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: 0 12px 30px rgba(20, 38, 52, .08);
+  padding: 1.25rem;
+}
+
+.ticket-message-raw {
+  min-height: 4rem;
+  border: 1px dashed #c98519;
+  border-radius: 8px;
+  background: #fffaf0;
+  padding: .85rem;
+}
+
+.inline-json {
+  max-width: 28rem;
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .78rem;
+}
+
+.config-preview {
+  margin-top: 1rem;
+}
+
 footer {
   border-top: 1px solid var(--line);
   background: var(--surface);
@@ -725,6 +813,9 @@ footer {
   .auth-layout,
   .support-layout,
   .sql-lab-grid,
+  .detail-grid,
+  .ticket-lab-grid,
+  .config-grid,
   .split-section,
   .split-section.reverse {
     grid-template-columns: 1fr;
@@ -782,6 +873,8 @@ footer {
   .support-layout,
   .vendor-search-section,
   .sql-lab-section,
+  .admin-section,
+  .detail-section,
   .portal-header {
     padding-block: 3rem;
   }
@@ -801,6 +894,7 @@ footer {
   }
 
   .portal-header,
+  .result-heading,
   .footer-inner {
     align-items: flex-start;
     flex-direction: column;

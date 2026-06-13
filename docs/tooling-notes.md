@@ -11,4 +11,4 @@ The 7-week course names common red-team and assessment tools so you can learn wh
 
 ## Local ACME Fit
 
-The ACME site is intentionally a lightweight web target. It is enough for web mapping, proxy review, authentication observation, evidence collection, and reporting practice. Heavier network, Active Directory, C2, or evasion tools should be studied conceptually here or used only in a separate purpose-built lab.
+The ACME site is intentionally a lightweight web target. It is enough for web mapping, proxy review, authentication observation, evidence collection, SQL injection comparison, IDOR analysis, stored XSS comparison, and reporting practice. Heavier network, Active Directory, C2, or evasion tools should be studied conceptually here or used only in a separate purpose-built lab.

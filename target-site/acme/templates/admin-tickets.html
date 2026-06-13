@@ -1,0 +1,29 @@
+<section class="portal-header">
+  <div>
+    <p class="eyebrow">Admin Operations</p>
+    <h1>Support ticket queue</h1>
+    <p>Review locally submitted support requests and compare escaped output with the intentionally vulnerable stored XSS lab preview.</p>
+  </div>
+  <a class="button secondary quiet" href="/portal">Portal</a>
+</section>
+
+<section class="section admin-section">
+  <div class="section-header">
+    <p class="eyebrow">{ticket_count}</p>
+    <h2>Escaped support tickets</h2>
+    <p>This table escapes requester-controlled text before rendering.</p>
+  </div>
+  {ticket_table}
+</section>
+
+<section class="section admin-section">
+  <div class="section-header">
+    <p class="eyebrow">Stored XSS Lab</p>
+    <h2>Intentionally vulnerable preview</h2>
+    <p>This local-only panel renders ticket messages without escaping so you can compare safe output with vulnerable output.</p>
+  </div>
+  <div class="panel lab-warning">
+    <p class="hint">Submit test payloads through the support form, then return here as sam.admin to inspect how stored content behaves.</p>
+  </div>
+  {xss_lab}
+</section>
