@@ -1,0 +1,35 @@
+<section class="portal-header">
+  <div>
+    <p class="eyebrow">Shipment Detail</p>
+    <h1>{tracking_id}</h1>
+    <p>{access_note}</p>
+  </div>
+  <a class="button secondary quiet" href="/shipments">Back to tracking</a>
+</section>
+
+<section class="section detail-section">
+  <div class="detail-grid">
+    <article class="panel detail-card">
+      <p class="tag">Route</p>
+      <h2>{origin} to {destination}</h2>
+      <dl>
+        <dt>Vendor</dt><dd><code>{vendor_code}</code></dd>
+        <dt>Region</dt><dd>{region}</dd>
+        <dt>Status</dt><dd><span class="status-pill">{status}</span></dd>
+        <dt>ETA</dt><dd>{eta}</dd>
+      </dl>
+    </article>
+    <article class="panel detail-card">
+      <p class="tag">Ownership</p>
+      <h2>Access context</h2>
+      <dl>
+        <dt>Assigned user</dt><dd>{assigned_user}</dd>
+        <dt>Training note</dt><dd>{notes}</dd>
+      </dl>
+      <div class="shipment-actions">
+        <a class="button secondary quiet" href="/portal/shipment?id=4">Try restricted ID</a>
+        <a class="button secondary quiet" href="/portal/shipment?id=4&amp;mode=lab">Open IDOR lab mode</a>
+      </div>
+    </article>
+  </div>
+</section>
