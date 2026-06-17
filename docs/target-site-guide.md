@@ -50,6 +50,8 @@ The app stores request logs, support tickets, and the generated SQLite database 
 
 The vendor page seeds a local SQLite database with fictional supplier records the first time the app starts. The standard vendor search uses parameterized SQL. The same page also includes a clearly labeled SQL training lab panel that intentionally builds a vulnerable query for local-only injection testing and comparison.
 
+![ACME vendor lookup page used for SQLite search and SQL injection comparison](assets/acme-vendors-lookup.png)
+
 Do not point SQL tooling or payloads at systems outside this local lab.
 
 ## Shipment and IDOR Lab

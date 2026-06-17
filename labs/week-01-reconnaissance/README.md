@@ -28,6 +28,8 @@ Build a target profile ethically.
 - Review `robots.txt` and any deliberately exposed lab notes.
 - Build an ethical target profile that clearly states localhost scope.
 
+![ACME careers page used for job-posting OSINT practice](../../docs/assets/acme-careers-page.png)
+
 ## Deliverable
 
 A target profile with screenshots or command output in `evidence/`.

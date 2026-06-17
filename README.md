@@ -2,6 +2,8 @@
 
 A local-first **7-week red-team learning course** inspired by MITRE ATT&CK, built around a fictional company target named **ACME**.
 
+![ACME target site home screen](docs/assets/acme-homescreen.png)
+
 The repository includes:
 
 - A structured weekly curriculum for practicing one red-team focus area at a time.
