@@ -21,6 +21,16 @@ Example:
 ACME_PORT=8080 ./scripts/run_acme.sh
 ```
 
+## Reset the Lab
+
+Stop the ACME site with `Ctrl+C`, then clear generated tickets, request logs, and database activity with:
+
+```bash
+./scripts/reset_acme.sh
+```
+
+The reset script keeps the source files and `.gitignore` in place. The next launch creates a fresh database with the starter vendor and shipment records. If ACME is still running, the script will stop without deleting anything.
+
 ## Pages to Explore
 
 | Path | Purpose | Useful Weeks |

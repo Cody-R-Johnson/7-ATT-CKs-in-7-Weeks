@@ -39,6 +39,14 @@ http://127.0.0.1:8000
 
 The app is intentionally lightweight and runs with Python's standard library. No package install is required.
 
+To clear generated tickets, logs, and database activity between exercises, stop the site with `Ctrl+C` and run:
+
+```bash
+./scripts/reset_acme.sh
+```
+
+The next launch will create a fresh starter database.
+
 ## ACME Target Site
 
 The fictional ACME site resembles a small business portal with public pages, employee login, a support contact form, a vendor portal, and internal-looking resources. It is intentionally designed for local training workflows such as:
