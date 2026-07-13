@@ -41,15 +41,15 @@ The reset script keeps the source files and `.gitignore` in place. The next laun
 | `/careers` | Hiring page | 1, 6 |
 | `/support` | Support request form | 2, 3 |
 | `/login` | Staff and vendor login | 2, 3, 4 |
-| `/portal` | Authenticated user portal | 4, 6 |
+| `/portal` | Authenticated user portal with role-specific Week 4 context | 4, 6 |
 | `/vendor` | SQLite-backed vendor lookup and SQL training lab | 2, 3, 6 |
 | `/shipments` | SQLite-backed shipment tracking search | 2, 3, 4, 6 |
 | `/portal/shipment?id=1` | Authenticated shipment detail with owner/admin access checks | 3, 4 |
 | `/portal/shipment?id=4&mode=lab` | Local-only IDOR comparison mode | 3, 4, 7 |
 | `/admin/tickets` | Admin support queue and stored XSS comparison lab | 3, 4, 7 |
 | `/admin/activity` | Admin audit event view for blue-team reflection | 4, 6, 7 |
-| `/internal/config` | Fake legacy config and recon breadcrumb page | 1, 2, 6 |
-| `/lab-notes` | Deliberately exposed training hints | 1, 7 |
+| `/internal/config` | Fake legacy config, recon breadcrumbs, and fictional Week 4 implied systems | 1, 2, 4, 6 |
+| `/lab-notes` | Deliberately exposed training hints | 1, 4, 7 |
 | `/health` | JSON health endpoint | 2 |
 
 ## Local Data
@@ -77,3 +77,7 @@ The `/admin/activity` page reads local audit events from SQLite and is useful fo
 ## Recon Breadcrumbs
 
 `/robots.txt`, `/lab-notes`, `/internal/config`, and the client-side `window.ACME_BUILD` object intentionally expose fake training metadata. Values such as `FAKE_ACME_DEMO_KEY_DO_NOT_USE` are not secrets; they are included so you can practice separating true findings from false positives.
+
+## Post-Exploitation Context
+
+The authenticated `/portal` page includes role-specific Week 4 context for employee, vendor, and administrator comparisons. The `/internal/config` page includes fictional implied-system names such as `ad-lab.acme.local` and `mdm-west-01.acme.local`; these are planning breadcrumbs for impact narratives, not real hosts to scan or resolve.

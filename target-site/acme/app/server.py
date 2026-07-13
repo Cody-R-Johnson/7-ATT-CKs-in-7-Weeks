@@ -343,6 +343,30 @@ def is_admin(username: str | None) -> bool:
     return USERS.get(username, {}).get("role") == "Administrator"
 
 
+def portal_context_for(profile: dict[str, str]) -> dict[str, str]:
+    role = profile["role"]
+    if role == "Administrator":
+        return {
+            "title": "Privileged review context",
+            "access": "Can review local support tickets, audit activity, and administrator-only workflow hints.",
+            "limits": "Administrator access is limited to this fictional training portal and does not imply host or domain admin rights.",
+            "systems": "Ticket queue, activity log, vendor SSO cleanup notes, warehouse tablet patch cycle.",
+        }
+    if role == "Vendor":
+        return {
+            "title": "Partner access context",
+            "access": "Can sign in to the vendor-facing portal and review logistics partner notices.",
+            "limits": "Cannot review administrator queues, local audit activity, or unrelated employee shipment records.",
+            "systems": "Vendor onboarding notes, shipment status workflows, partner readiness reminders.",
+        }
+    return {
+        "title": "Employee operations context",
+        "access": "Can review assigned shipment workflows and normal operations bulletins.",
+        "limits": "Cannot review administrator queues or records assigned to other users in normal mode.",
+        "systems": "Warehouse tablets, scanner refresh notices, assigned shipment records.",
+    }
+
+
 def search_vendors(query: str) -> list[sqlite3.Row]:
     cleaned = query.strip().lower()
     if not cleaned:
@@ -829,6 +853,7 @@ class AcmeHandler(BaseHTTPRequestHandler):
         if not user:
             return self.redirect("/login")
         profile = USERS[user]
+        role_context = portal_context_for(profile)
         admin_panel = ""
         if profile["role"] == "Administrator":
             admin_panel = """
@@ -847,6 +872,10 @@ class AcmeHandler(BaseHTTPRequestHandler):
             username=html.escape(user),
             role=html.escape(profile["role"]),
             team=html.escape(profile["team"]),
+            role_context_title=html.escape(role_context["title"]),
+            role_context_access=html.escape(role_context["access"]),
+            role_context_limits=html.escape(role_context["limits"]),
+            role_context_systems=html.escape(role_context["systems"]),
             admin_panel=admin_panel,
         ).decode("utf-8")
         self.send_html(page_shell("Portal", body, user))
